@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment-1</title>
+    
+
+    <script>
+
+        let arr=[1,2,3,4,5,6,7,8,9];
+
+
+        window.addEventListener('DOMContentLoaded',()=>{
+
+           
+            
+            console.log('entered the program successfully');
+
+            const txt = document.querySelector('#input');
+            txt.addEventListener('blur',()=>{
+
+                console.log('blur event occured');
+                console.log(arr);
+
+                let input=document.querySelector('#input').value;
+
+                let output =forBlur(input);
+                if(output){
+                    
+                    document.querySelector('#edit').disabled=false;
+                    document.querySelector('#delete').disabled=false;
+                    document.querySelector('#add').disabled=true;
+                   
+
+                    document.querySelector('#msg').innerText='number present';
+                }
+                else{
+
+                    document.querySelector('#add').disabled=false;
+                    document.querySelector('#msg').innerText='number not present';
+                    document.querySelector('#edit').disabled=true;
+                    document.querySelector('#delete').disabled=true;
+                }
+            })
+
+            const b1 = document.querySelector('#add');
+            b1.addEventListener('click',()=>{
+
+                console.log('add button clicked');
+                let input= document.querySelector('#input').value;
+
+                let output = addFun(input);
+                if(output){
+                    document.querySelector('#add').disabled=true;
+                    document.querySelector('#edit').disable=true;
+                    document.querySelector('#delete').disabled=true;
+                    document.querySelector('#view').disable=true;
+                    document.querySelector('#odd').disabled=true;
+                    document.querySelector('#msg').innerText='already present';
+
+
+                }
+                else{
+
+                    arr.push(input);
+
+                    document.querySelector('#add').disabled=true;
+                    document.querySelector('#edit').disable=true;
+                    document.querySelector('#delete').disabled=true;
+                    document.querySelector('#view').disable=true;
+                    //document.querySelector('#odd').disabled=true;
+                    document.querySelector('#msg').innerText='added';
+
+                  
+
+
+                }
+            })
+
+
+            const b2 = document.querySelector('#edit');
+            b2.addEventListener('click',()=>{
+
+                console.log('edit button clicked');
+                
+
+               
+
+                let input= document.querySelector('#input').value;
+                let input2=prompt();
+                output=forEdit(input,input2);
+
+                if(output){
+
+                    document.querySelector('#msg').innerText='number replaced';
+ 
+                }
+                else{
+
+                    document.querySelector('#msg').innerText='number is already present';
+
+                }
+
+                
+            })
+
+            const b3 = document.querySelector('#delete');
+            b3.addEventListener('click',()=>{
+
+                console.log('delete button clicked');
+
+                let input= document.querySelector('#input').value;
+                let output=forDelete(input);
+
+                if(output){
+
+                    
+
+                    document.querySelector('#msg').innerText='deleted';
+                }
+                else{
+
+                    document.querySelector('#msg').innerText='number not present'
+                }
+            })
+
+            const b4 = document.querySelector('#view');
+            b4.addEventListener('click',()=>{
+
+                console.log('view button clicked');
+                showArray();
+
+                document.querySelector('#contents').innerHTML=arr;
+                document.querySelector('#msg').innerText=''
+
+               
+            })
+
+            const b5 = document.querySelector('#odd');
+            b5.addEventListener('click',()=>{
+
+                console.log(' view odd button clicked');
+                showArrayAtOdd();
+            })
+
+
+            function isPresent(n){
+
+                let output=false;
+
+                for(let i=0;i<arr.length;i++)
+                {
+                    if(arr[i]==n){
+                        output=true;
+                        break;
+                    }
+                }
+
+                return output;
+
+            }
+
+            
+
+           function showArrayInContent(){
+
+                let output1=arr;
+
+                let msg=" ";
+                for(let i=0;i<output1.length;i++){
+                    msg+=output1[i];
+                }
+
+                document.querySelector('#contents').innerText=msg;
+            }
+
+           
+
+            function forBlur(n){
+                let output=false;
+                for(let i=0;i<arr.length;i++){
+                    if(arr[i]==n){
+                        output=true;
+                    }
+                }
+                return output;
+            }
+
+            function addFun(n){
+                let output=false;
+                for(let i=0;i<arr.length;i++){
+                    if(arr[i]==n){
+                    output=true;
+                    break;
+                    
+                }
+                return output;
+            } 
+        }
+        function forDelete(n){
+                let output=false;
+                for(let i=0;i<arr.length;i++){
+                    if(arr[i]==n){
+                        arr.splice(i,1)
+                        output=true;
+                    }
+                }
+                return output;
+            }
+
+             function showArray(){
+
+                let output=arr;
+
+                let msg=" ";
+                for(let i=0;i<output.length;i++){
+                    msg+=" "+output[i];
+                }
+
+                document.querySelector('#msg').innerText=msg;
+            }
+
+             function showArrayAtOdd(){
+
+                let output=arr;
+
+                let msg=" ";
+                for(let i=0;i<output.length;i+=2){
+                    msg+=" "+output[i];
+                }
+
+                document.querySelector('#msg').innerText=msg;
+            }
+
+          
+
+
+            function forEdit(n,m){
+                let output=false;
+
+               if(!isPresent(m)){
+
+                for(let i=0;i<arr.length;i++){
+                    if(arr[i]==n && arr[i]!=m){
+                        
+                        arr.splice(i,1,m);
+                        output=true;
+                    }
+
+                }
+                return output;
+
+             
+            }
+                 } 
+               
+           
+        })
+    </script>
+</head>
+<body>
+    <input type="text" id="input" placeholder="enter the number here">
+    <span id="msg">appropriate message</span><br><br>
+    <button id="add" disabled>add</button>
+    <button id="edit" disabled>edit</button>
+    <button id="delete" disabled>delete</button>
+    <button id="view" >view all</button>
+    <button id="odd" >show odd position</button>
+    <hr>
+    <p id="contents">contents</p>
+</body>
+</html>

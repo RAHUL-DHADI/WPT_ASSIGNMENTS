@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment-2</title>
+    <script>
+
+        let empList=[{empno:1,empname:'rahul',email:'dhadirahul95@gmail.com',departmentid:10},
+                      {empno:2,empname:'rohit',email:'rohitdhadi25@gmail.com',departmentid:12},
+                      {empno:3,empname:'priyanka',email:'priyadhadi@gmail.com',departmentid:11}];
+
+        window.addEventListener('DOMContentLoaded',()=>{
+            console.log("entered the program");
+
+            const t=document.querySelector('#empno');
+            t.addEventListener('blur',()=>{
+
+                console.log('blur event occured');
+                console.log(empList);
+
+                input= document.querySelector('#empno').value;
+                output=addDetails(input);
+
+                if(output.result){
+
+                    document.querySelector('#empname').value=output.empdetails.empname;
+                    document.querySelector('#email').value=output.empdetails.email;
+                    document.querySelector('#deptid').value=output.empdetails.departmentid;
+                    document.querySelector('#modify').disabled=false;
+                    document.querySelector('#remove').disabled=false;
+                    document.querySelector('#add').disabled=true;
+
+                   
+
+                    document.querySelector('#msg').innerText='employee present in the list'
+                }
+                else{
+
+                    document.querySelector('#msg').innerText='employee not present in the list'
+                    document.querySelector('#add').disabled=false;
+                    document.querySelector('#modify').disabled=true;
+                    document.querySelector('#remove').disabled=true;
+                    document.querySelector('#empname').value='';
+                    document.querySelector('#email').value='';
+                    document.querySelector('#deptid').value='';
+                   
+                }
+            });
+
+            const b1=document.querySelector('#add');
+            b1.addEventListener('click',()=>{
+                console.log('add button clicked');
+
+                let input={empno:document.querySelector('#empno').value,
+                           empname:document.querySelector('#empname').value,
+                           email:document.querySelector('#email').value,
+                           departmentid:document.querySelector('#deptid').value,};
+                        
+                let output=empAdd(input);
+
+                if(output){
+
+                    document.querySelector('#msg').innerText='employee added'
+
+                }
+                else{
+
+                    document.querySelector('#msg').innerText='employee already present'
+                }
+
+                       
+            })
+
+            const b2=document.querySelector('#modify');
+            b2.addEventListener('click',()=>{
+                console.log('modify button clicked');
+            
+
+            input={empno:document.querySelector("#empno").value,empname:document.querySelector("#empname").value,email:document.querySelector("#email").value,departmentid:document.querySelector("#deptid").value};
+
+            output=modifyEmp(input);
+
+            if(output.status){
+
+                document.querySelector('#msg').innerText='employee details updatedd';
+
+
+            }
+
+            else{
+
+                document.querySelector('#msg').innerText='details not updated';
+            }
+
+        })
+
+
+            const b3=document.querySelector('#remove');
+            b3.addEventListener('click',()=>{
+
+                console.log('remove button clicked');
+
+                input= document.querySelector('#empno').value;
+                output=removeEmp(input);
+
+                if(output){
+                    document.querySelector('#msg').innerText='employee details removed'
+                    document.querySelector('#empname').value='';
+                    document.querySelector('#email').value='';
+                    document.querySelector('#deptid').value='';
+                }
+                else{
+
+                    document.querySelector('#msg').innerText='employee not present in the database'
+                    document.querySelector('#empname').value='';
+                    document.querySelector('#email').value='';
+                    document.querySelector('#deptid').value='';
+                }
+            })
+
+
+            const b4=document.querySelector('#viewall');
+            b4.addEventListener('click',()=>{
+
+                console.log('viewall button clicked');
+
+                document.querySelector('#contents').innerHTML=empNamesArray();
+            })
+
+            const b5=document.querySelector('#viewid');
+            b5.addEventListener('click',()=>{
+
+                console.log('id button clicked');
+
+                let input2=prompt();
+                let output=isPresentId(input2);
+
+                if(output){
+                    document.querySelector('#contents').innerHTML=empNamesArrayId(input2);
+                }
+
+                else{
+
+                    document.querySelector('#contents').innerHTML='no employee present in this dept';
+
+                }
+            })
+
+            function addDetails(n){
+
+                let output={result:false,empdetails:{}}
+
+                for(let i=0;i<empList.length;i++){
+                if(empList[i].empno==n){
+                    output.result=true;
+                    output.empdetails=empList[i];
+                }
+            }
+            return output;
+            }
+
+            function isPresent(n){
+                let output=false;
+                for(let i=0;i<empList.length;i++){
+                if(empList[i].empno===n){
+                    output=true;
+                }
+                return output;
+            }
+
+
+
+            }
+
+
+            function modifyEmp(input){
+
+                let output={status:false , empdetails:{}};
+
+                if(isPresent){
+                    for(let i=0;i<empList.length;i++){
+                        if(empList[i].empid==input.empid){
+                    output.status=true;
+                    empList[i].empname=input.empname;
+                    empList[i].email=input.email;
+                    empList[i].departmentid=input.departmentid;
+                    break;
+                        }
+
+                    }
+
+
+                }
+
+                return output;
+            }
+
+            function empAdd(n){
+
+                let output=false;
+                if(!isPresent(n.empno)){
+
+                    output=true;
+                    empList.push(n);
+
+                }
+
+               return output;
+            }
+
+
+            function removeEmp(n){
+              
+                    output=true;
+                    for(let i=0;i<empList.length;i++){
+                        if(empList[i].empno==n){
+                            empList.splice(i,1);
+                            break;
+                        }
+
+              
+
+            }
+            return output;
+        }
+
+        function empNamesArray(){
+            let msg="";
+            for(let i=0;i<empList.length;i++){
+                msg+=empList[i].empname+"      , ";
+            }
+
+            return msg;
+
+        }
+
+        function empNamesArrayId(n){
+
+            let msg="";
+            for(let i=0;i<empList.length;i++){
+                if(empList[i].departmentid==n){
+                msg+=empList[i].empname+"      , ";
+                }
+            }
+
+            return msg;
+
+
+        }
+
+
+        function isPresentId(n){
+                let output=false;
+                for(let i=0;i<empList.length;i++){
+                if(empList[i].departmentid==n){
+                    output=true;
+                }
+                
+            }
+            return output;
+        }
+
+           
+        })
+    </script>
+</head>
+<body>
+    <input type="text" id="empno" placeholder="enter empno"><span id="msg">log here</span><br>
+    <input type="text" id="empname" placeholder="employee name"><br>
+    <input type="text" id="email" placeholder="email"><br>
+    <input type="text" id="deptid" placeholder="department id"><br><br>
+    <button id="add" disabled>add</button>
+    <button id="modify" disabled>modify</button>
+    <button id="remove" disabled>remove</button>
+    <button id="viewall" >view all</button>
+    <button id="viewid" >view on dept_id</button>
+    <hr>
+    <p id="contents">contents</p>
+</body>
+</html>
