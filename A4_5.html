@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    ></script>
+
+    <script>
+
+        $(()=>{
+
+            console.log("entered the program");
+
+            $("#acno").blur(()=>{
+
+                console.log('blur event occured');
+
+                let input={acctno:$('#acno').val()}
+
+                let parameterstothefunction={
+
+                    data:input,
+                    url:'http://localhost:999/findbalance',
+                    type:'get',
+                    datatype:'json',
+                    success:(data)=>{console.log('connected successfull'+data.balance+data.status)
+                       $('#msg').text(data.balance);
+                
+                      },
+                    error:(data)=>{console.log('connected not successfull'+data)}
+                }
+                $.ajax(parameterstothefunction);
+            })
+        })
+    </script>
+</head>
+<body>
+    <input type="text" name="" id="acno" placeholder="enter the account number">
+    <br>
+    <span id="msg">balance will appear here</span>
+</body>
+</html>
