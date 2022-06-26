@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    ></script>
+
+    <script>
+
+        $(()=>{
+
+            console.log("entered the program");
+
+            $("#pin").blur(()=>{
+
+                console.log('blur event occured');
+
+                let input={pincode:$('#pin').val()}
+
+                let parameterstothefunction={
+
+                    data:input,
+                    url:'http://localhost:999/find',
+                    type:'get',
+                    datatype:'json',
+                    success:(data)=>{console.log('connected successfull'+data.city+data.status)
+                       $('#msg').text(data.city);
+                
+                      },
+                    error:(data)=>{console.log('connected not successfull'+data)}
+                }
+                $.ajax(parameterstothefunction);
+            })
+        })
+    </script>
+</head>
+<body>
+    <input type="text" name="" id="pin" placeholder="enter the pincod">
+    <br>
+    <span id="msg">city will appear here</span>
+</body>
+</html>
